@@ -1,7 +1,7 @@
 local requests = require 'requests'
 
 local VERSION = "1.0"
-local UPDATE_URL = "https://raw.githubusercontent.com/impachi1337/testupdater/main/update.json"
+local UPDATE_URL = "https://raw.githubusercontent.com/impachi1337/testupdater/refs/heads/main/update.json"
 
 function main()
     repeat wait(0) until isSampAvailable()
@@ -16,12 +16,12 @@ end
 function checkUpdate()
     lua_thread.create(function()
 
-        sampAddChatMessage("[Updater] Проверка обновлений...", -1)
+        sampAddChatMessage("[Updater] ГЏГ°Г®ГўГҐГ°ГЄГ  Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГ©...", -1)
 
         local response = requests.get(UPDATE_URL)
 
         if not response then
-            sampAddChatMessage("[Updater] Нет ответа от сервера", 0xFF0000)
+            sampAddChatMessage("[Updater] ГЌГҐГІ Г®ГІГўГҐГІГ  Г®ГІ Г±ГҐГ°ГўГҐГ°Г ", 0xFF0000)
             return
         end
 
@@ -33,16 +33,16 @@ function checkUpdate()
         local ok, data = pcall(decodeJson, response.text)
 
         if not ok or not data then
-            sampAddChatMessage("[Updater] Ошибка JSON", 0xFF0000)
+            sampAddChatMessage("[Updater] ГЋГёГЁГЎГЄГ  JSON", 0xFF0000)
             return
         end
 
         if tostring(data.version) == tostring(VERSION) then
-            sampAddChatMessage("[Updater] Последняя версия", 0x00FF00)
+            sampAddChatMessage("[Updater] ГЏГ®Г±Г«ГҐГ¤Г­ГїГї ГўГҐГ°Г±ГЁГї", 0x00FF00)
             return
         end
 
-        sampAddChatMessage("[Updater] Найдено обновление "..data.version, 0xFFFF00)
+        sampAddChatMessage("[Updater] ГЌГ Г©Г¤ГҐГ­Г® Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ "..data.version, 0xFFFF00)
 
         local tempFile = getWorkingDirectory() .. "\\update.tmp"
 
@@ -50,14 +50,14 @@ function checkUpdate()
             function(id, status)
 
                 if status == 3 then
-                    sampAddChatMessage("[Updater] Ошибка скачивания", 0xFF0000)
+                    sampAddChatMessage("[Updater] ГЋГёГЁГЎГЄГ  Г±ГЄГ Г·ГЁГўГ Г­ГЁГї", 0xFF0000)
                 end
 
                 if status == 6 then
                     local f = io.open(tempFile, "rb")
 
                     if not f then
-                        sampAddChatMessage("[Updater] Файл не скачан", 0xFF0000)
+                        sampAddChatMessage("[Updater] Г”Г Г©Г« Г­ГҐ Г±ГЄГ Г·Г Г­", 0xFF0000)
                         return
                     end
 
@@ -69,14 +69,14 @@ function checkUpdate()
                     local script = io.open(thisScript().path, "wb")
 
                     if not script then
-                        sampAddChatMessage("[Updater] Нет доступа к файлу скрипта", 0xFF0000)
+                        sampAddChatMessage("[Updater] ГЌГҐГІ Г¤Г®Г±ГІГіГЇГ  ГЄ ГґГ Г©Г«Гі Г±ГЄГ°ГЁГЇГІГ ", 0xFF0000)
                         return
                     end
 
                     script:write(content)
                     script:close()
 
-                    sampAddChatMessage("[Updater] Обновление установлено", 0x00FF00)
+                    sampAddChatMessage("[Updater] ГЋГЎГ­Г®ГўГ«ГҐГ­ГЁГҐ ГіГ±ГІГ Г­Г®ГўГ«ГҐГ­Г®", 0x00FF00)
 
                     wait(1000)
                     thisScript():reload()
